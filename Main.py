@@ -40,7 +40,18 @@ class Jogo:
         #    - Se self.nave.rect.colliderect(self.asteroide.rect):
         #        - Finalizar a partida (self.rodando = False ou reiniciar)
         # =========================================================================
-        pass
+        
+        # Tiro vs Asteroide
+        for tiro in self.nave.tiros[:]:
+            if tiro.colliderect(self.asteroide.rect):
+                self.nave.tiros.remove(tiro)
+                self.asteroide.iniciar_status()
+                self.pontos += 1
+                break
+
+        # Asteroide vs Nave
+        if self.nave.rect.colliderect(self.asteroide.rect):
+            self.rodando = False
 
     def atualizar(self):
         self.nave.atualizar()
