@@ -88,7 +88,7 @@ class Jogo:
         self.tela.fill((15, 15, 25))
 
         # Elementos do jogo
-        self.nave.desenhar(self.tela)
+        self.nave.desenhar(self.tela, self.vidas)
         self.asteroide.desenhar(self.tela)
 
         # Tamanho atual da tela

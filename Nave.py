@@ -89,15 +89,67 @@ class Nave(ElementoJogo):
         self.mover()
         self.atualizar_tiros()
 
-    def desenhar(self, tela):
-        # Polimorfismo: desenha a nave em formato de triângulo
-        pontos = [
+    def desenhar(self, tela, vidas=3):
+        # Define a cor conforme o dano da nave
+        if vidas >= 3:
+            cor_atual = self.cor
+        elif vidas == 2:
+            cor_atual = (255, 170, 40)
+        else:
+            cor_atual = (255, 70, 70)
+
+        # Formato triangular da nave
+        pontos_nave = [
             (self.rect.centerx, self.rect.top),
             (self.rect.left, self.rect.bottom),
             (self.rect.right, self.rect.bottom)
         ]
-        pygame.draw.polygon(tela, self.cor, pontos)
 
-        # Desenha os tiros ativos na cor branca
+        pygame.draw.polygon(
+            tela,
+            cor_atual,
+            pontos_nave
+        )
+
+        # Dano moderado: uma rachadura
+        if vidas == 2:
+            pygame.draw.line(
+                tela,
+                (60, 60, 60),
+                (self.rect.centerx, self.rect.centery),
+                (self.rect.right - 5, self.rect.bottom - 5),
+                3
+            )
+
+        # Dano crítico: duas rachaduras e uma marca central
+        elif vidas <= 1:
+            pygame.draw.line(
+                tela,
+                (40, 40, 40),
+                (self.rect.centerx, self.rect.top + 8),
+                (self.rect.left + 8, self.rect.bottom - 5),
+                3
+            )
+
+            pygame.draw.line(
+                tela,
+                (40, 40, 40),
+                (self.rect.centerx, self.rect.centery),
+                (self.rect.right - 6, self.rect.bottom - 4),
+                3
+            )
+
+            pygame.draw.circle(
+                tela,
+                (35, 35, 35),
+                self.rect.center,
+                4
+            )
+
+        # Desenha os tiros
         for tiro in self.tiros:
-            pygame.draw.rect(tela, (255, 255, 255), tiro)
+            pygame.draw.rect(
+                tela,
+                (255, 255, 100),
+                tiro
+            )
