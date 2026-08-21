@@ -41,20 +41,7 @@ class Jogo:
                 self.nave.processar_evento(evento)
 
     def checar_colisoes(self):
-        # =========================================================================
-        # TODO 4 (Alunos):
-        # A) Tiro vs Asteroide:
-        #    - Percorrer self.nave.tiros
-        #    - Se tiro.colliderect(self.asteroide.rect):
-        #        1. Remover o tiro da lista
-        #        2. Reiniciar o asteroide (self.asteroide.iniciar_status())
-        #        3. Incrementar self.pontos em 1
-        #
-        # B) Asteroide vs Nave:
-        #    - Se self.nave.rect.colliderect(self.asteroide.rect):
-        #        - Finalizar a partida (self.rodando = False ou reiniciar)
-        # =========================================================================
-        
+      
         # Tiro vs Asteroide
         for tiro in self.nave.tiros[:]:
             if tiro.colliderect(self.asteroide.rect):

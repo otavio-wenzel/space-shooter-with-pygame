@@ -30,13 +30,7 @@ class Asteroid(ElementoJogo):
         self.iniciar_status()
 
     def iniciar_status(self):
-        # =========================================================================
-        # TODO 3 (Alunos):
-        # - Sortear uma posição X aleatória dentro dos limites da tela
-        # - Posicionar o Y acima da tela (ex: entre -150 e -50)
-        # - Sortear uma velocidade de queda aleatória (ex: entre 3 e 7)
-        # =========================================================================
-        
+  
         self.rect.x = random.randint(
             0,
             self.largura_tela - self.rect.width

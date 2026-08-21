@@ -50,11 +50,7 @@ class Nave(ElementoJogo):
             self.rect.right = self.largura_tela
 
     def atirar(self):
-        # =========================================================================
-        # TODO 1 (Alunos): Criar um projétil (pygame.Rect) saindo da ponta da nave
-        # (ex: largura 4, altura 10) e adicioná-lo à lista self.tiros
-        # =========================================================================
-        
+
         largura_tiro = 4
         altura_tiro = 10
 
@@ -71,12 +67,7 @@ class Nave(ElementoJogo):
         self.tiros.append(tiro)
 
     def atualizar_tiros(self):
-        # =========================================================================
-        # TODO 2 (Alunos):
-        # - Mover cada tiro da lista para cima (diminuir tiro.y)
-        # - Remover da lista os tiros que saírem pelo topo da tela (tiro.bottom < 0)
-        # =========================================================================
-        
+
         for tiro in self.tiros:
             tiro.y -= self.velocidade_tiro
 
