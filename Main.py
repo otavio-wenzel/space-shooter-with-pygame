@@ -15,6 +15,7 @@ class Jogo:
         self.fps = 10
         self.rodando = True
         self.pontos = 0
+        self.fonte = pygame.font.Font(None, 36)
 
         # Elementos do jogo
         self.nave = Nave(self.largura, self.altura)
@@ -60,8 +61,18 @@ class Jogo:
 
     def desenhar(self):
         self.tela.fill((15, 15, 25))
+
         self.nave.desenhar(self.tela)
         self.asteroide.desenhar(self.tela)
+
+        texto_pontos = self.fonte.render(
+            f"Pontos: {self.pontos}",
+            True,
+            (255, 255, 255)
+        )
+
+        self.tela.blit(texto_pontos, (20, 20))
+        
         pygame.display.flip()
 
     def executar(self):
