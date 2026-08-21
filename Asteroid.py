@@ -15,6 +15,8 @@ class Asteroid(ElementoJogo):
         self.largura_tela = largura_tela
         self.altura_tela = altura_tela
         self.raio = 20
+        self.vida_maxima = 3
+        self.vida_atual = self.vida_maxima
 
         super().__init__(
             x=0,
@@ -24,6 +26,7 @@ class Asteroid(ElementoJogo):
             cor=cor,
             velocidade=velocidade
         )
+
         self.iniciar_status()
 
     def iniciar_status(self):
@@ -51,6 +54,13 @@ class Asteroid(ElementoJogo):
             [-2.0, -1.5, 1.5, 2.0]
         )
 
+        self.vida_atual = self.vida_maxima
+
+    def receber_dano(self):
+        self.vida_atual -= 1
+
+        return self.vida_atual <= 0
+
     def mover(self):
         self.rect.y += self.velocidade
 
@@ -64,6 +74,18 @@ class Asteroid(ElementoJogo):
     def desenhar(self, tela):
         centro_x = self.rect.centerx
         centro_y = self.rect.centery
+
+        if self.vida_atual >= 3:
+            cor_corpo = (105, 95, 90)
+            cor_contorno = (185, 170, 155)
+
+        elif self.vida_atual == 2:
+            cor_corpo = (135, 100, 75)
+            cor_contorno = (220, 160, 100)
+
+        else:
+            cor_corpo = (155, 70, 55)
+            cor_contorno = (255, 120, 80)
 
         angulo_inicial = math.radians(self.angulo)
 
@@ -102,14 +124,14 @@ class Asteroid(ElementoJogo):
         # Corpo do asteroide
         pygame.draw.polygon(
             tela,
-            (105, 95, 90),
+            cor_corpo,
             pontos
         )
 
         # Contorno externo
         pygame.draw.polygon(
             tela,
-            (185, 170, 155),
+            cor_contorno,
             pontos,
             2
         )
@@ -177,4 +199,86 @@ class Asteroid(ElementoJogo):
             (55, 50, 50),
             cratera_pequena,
             2
+        )
+
+        # Primeira rachadura
+        if self.vida_atual <= 2:
+            inicio_rachadura = rotacionar_posicao(-4, -15)
+            meio_rachadura = rotacionar_posicao(-1, -6)
+            final_rachadura = rotacionar_posicao(6, 0)
+
+            pygame.draw.lines(
+                tela,
+                (45, 35, 30),
+                False,
+                [
+                    inicio_rachadura,
+                    meio_rachadura,
+                    final_rachadura
+                ],
+                2
+            )
+
+        # Segunda rachadura no estado crítico
+        if self.vida_atual <= 1:
+            inicio_rachadura = rotacionar_posicao(12, -5)
+            meio_rachadura = rotacionar_posicao(4, 1)
+            final_rachadura = rotacionar_posicao(1, 12)
+
+            pygame.draw.lines(
+                tela,
+                (40, 25, 25),
+                False,
+                [
+                    inicio_rachadura,
+                    meio_rachadura,
+                    final_rachadura
+                ],
+                3
+            )
+
+        largura_barra = self.rect.width
+        altura_barra = 4
+
+        x_barra = self.rect.left
+        y_barra = self.rect.top - 8
+
+        proporcao_vida = (
+            self.vida_atual / self.vida_maxima
+        )
+
+        largura_vida = int(
+            largura_barra * proporcao_vida
+        )
+
+        # Fundo da barra
+        pygame.draw.rect(
+            tela,
+            (40, 40, 45),
+            pygame.Rect(
+                x_barra,
+                y_barra,
+                largura_barra,
+                altura_barra
+            )
+        )
+
+        # Cor da barra
+        if self.vida_atual >= 3:
+            cor_vida = (80, 220, 100)
+        elif self.vida_atual == 2:
+            cor_vida = (255, 180, 50)
+        else:
+            cor_vida = (255, 70, 70)
+
+        # Vida restante
+        pygame.draw.rect(
+            tela,
+            cor_vida,
+            pygame.Rect(
+                x_barra,
+                y_barra,
+                largura_vida,
+                altura_barra
+            )
         )

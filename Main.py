@@ -59,8 +59,13 @@ class Jogo:
         for tiro in self.nave.tiros[:]:
             if tiro.colliderect(self.asteroide.rect):
                 self.nave.tiros.remove(tiro)
-                self.asteroide.iniciar_status()
-                self.pontos += 1
+
+                asteroide_destruido = self.asteroide.receber_dano()
+
+                if asteroide_destruido:
+                    self.pontos += 1
+                    self.asteroide.iniciar_status()
+
                 break
 
         # Asteroide vs Nave
