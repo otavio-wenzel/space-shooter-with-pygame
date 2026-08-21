@@ -2,7 +2,13 @@ import pygame
 from ElementoJogo import ElementoJogo
 
 class Nave(ElementoJogo):
-    def __init__(self, largura_tela, altura_tela, velocidade=6, cor=(0, 255, 100)):
+    def __init__(
+            self,
+            largura_tela,
+            altura_tela,
+            velocidade=5,
+            cor=(0, 255, 100)):
+        
         # Inicializa a classe base com posição inicial centralizada embaixo
         super().__init__(
             x=largura_tela // 2 - 20,
@@ -16,6 +22,7 @@ class Nave(ElementoJogo):
         self.altura_tela = altura_tela
         self.vel_x = 0
         self.tiros = []  # Lista que guardará os tiros ativos
+        self.velocidade_tiro = 10
 
     def processar_evento(self, evento):
         """Controla os eventos de teclado para movimentação e disparo."""
@@ -71,7 +78,7 @@ class Nave(ElementoJogo):
         # =========================================================================
         
         for tiro in self.tiros:
-            tiro.y -= 10
+            tiro.y -= self.velocidade_tiro
 
         self.tiros = [
             tiro for tiro in self.tiros
