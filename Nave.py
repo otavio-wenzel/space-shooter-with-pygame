@@ -47,7 +47,21 @@ class Nave(ElementoJogo):
         # TODO 1 (Alunos): Criar um projétil (pygame.Rect) saindo da ponta da nave
         # (ex: largura 4, altura 10) e adicioná-lo à lista self.tiros
         # =========================================================================
-        pass
+        
+        largura_tiro = 4
+        altura_tiro = 10
+
+        tiro = pygame.Rect(
+            0,
+            0,
+            largura_tiro,
+            altura_tiro
+        )
+
+        tiro.centerx = self.rect.centerx
+        tiro.bottom = self.rect.top
+
+        self.tiros.append(tiro)
 
     def atualizar_tiros(self):
         # =========================================================================
