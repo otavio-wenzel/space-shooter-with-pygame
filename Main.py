@@ -15,6 +15,8 @@ class Jogo:
         self.fps = 60
         self.rodando = True
         self.pontos = 0
+        self.vidas_iniciais = 3
+        self.vidas = self.vidas_iniciais
         self.fonte = pygame.font.Font(None, 36)
         self.fonte_game_over = pygame.font.Font(None, 72)
         self.fonte_instrucao = pygame.font.Font(None, 32)
@@ -63,8 +65,15 @@ class Jogo:
 
         # Asteroide vs Nave
         if self.nave.rect.colliderect(self.asteroide.rect):
-            self.game_over = True
+            self.vidas -= 1
             self.nave.vel_x = 0
+
+            if self.vidas <= 0:
+                self.game_over = True
+            else:
+                self.nave.rect = self.posicao_inicial_nave.copy()
+                self.nave.tiros.clear()
+                self.asteroide.iniciar_status()
 
     def atualizar(self):
         if self.game_over:
@@ -75,11 +84,17 @@ class Jogo:
         self.checar_colisoes()
 
     def desenhar(self):
+        # Fundo da tela
         self.tela.fill((15, 15, 25))
 
+        # Elementos do jogo
         self.nave.desenhar(self.tela)
         self.asteroide.desenhar(self.tela)
 
+        # Tamanho atual da tela
+        largura_tela, altura_tela = self.tela.get_size()
+
+        # Pontuação no canto superior esquerdo
         texto_pontos = self.fonte.render(
             f"Pontos: {self.pontos}",
             True,
@@ -88,13 +103,26 @@ class Jogo:
 
         self.tela.blit(texto_pontos, (20, 20))
 
-        if self.game_over:
-            largura_tela, altura_tela = self.tela.get_size()
+        # Vidas no canto superior direito
+        texto_vidas = self.fonte.render(
+            f"Vidas: {self.vidas}",
+            True,
+            (255, 100, 100)
+        )
 
+        rect_vidas = texto_vidas.get_rect(
+            topright=(largura_tela - 20, 20)
+        )
+
+        self.tela.blit(texto_vidas, rect_vidas)
+
+        # Tela exibida somente quando a partida terminar
+        if self.game_over:
             camada_escura = pygame.Surface(
                 (largura_tela, altura_tela),
                 pygame.SRCALPHA
             )
+
             camada_escura.fill((0, 0, 0, 180))
             self.tela.blit(camada_escura, (0, 0))
 
@@ -111,16 +139,23 @@ class Jogo:
             )
 
             rect_game_over = texto_game_over.get_rect(
-                center=(largura_tela // 2, altura_tela // 2 - 30)
+                center=(
+                    largura_tela // 2,
+                    altura_tela // 2 - 30
+                )
             )
 
             rect_reiniciar = texto_reiniciar.get_rect(
-                center=(largura_tela // 2, altura_tela // 2 + 35)
+                center=(
+                    largura_tela // 2,
+                    altura_tela // 2 + 35
+                )
             )
 
             self.tela.blit(texto_game_over, rect_game_over)
             self.tela.blit(texto_reiniciar, rect_reiniciar)
 
+        # Exibe o frame completo
         pygame.display.flip()
 
     def executar(self):
@@ -134,6 +169,7 @@ class Jogo:
 
     def reiniciar_partida(self):
         self.pontos = 0
+        self.vidas = self.vidas_iniciais
         self.game_over = False
 
         self.nave.rect = self.posicao_inicial_nave.copy()
