@@ -69,7 +69,14 @@ class Nave(ElementoJogo):
         # - Mover cada tiro da lista para cima (diminuir tiro.y)
         # - Remover da lista os tiros que saírem pelo topo da tela (tiro.bottom < 0)
         # =========================================================================
-        pass
+        
+        for tiro in self.tiros:
+            tiro.y -= 10
+
+        self.tiros = [
+            tiro for tiro in self.tiros
+            if tiro.bottom >= 0
+        ]
 
     def atualizar(self):
         self.mover()
